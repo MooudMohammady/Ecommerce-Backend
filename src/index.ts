@@ -1,21 +1,24 @@
-import express from 'express';
-import dotenv from 'dotenv';
-import authRoute from './routes/auth.route';
+import express from "express";
+import dotenv from "dotenv";
+import authRoute from "./routes/auth.route";
+import morgan from "morgan";
 
-//For env File 
+//For env File
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 8000;
+const port = process.env.PORT || 3040;
 
 // setup middelware
-app.use(express.json())
+app.use(express.urlencoded({extended:true}))
+app.use(express.json());
+app.use(morgan("tiny"))
 
 // setup routes
-app.use("/auth", authRoute)
+app.use("/auth", authRoute);
 
-app.get('*', (req, res) => {
-  res.status(404).send('Endpoint notfound 404 !');
+app.get("*", (req, res) => {
+  res.status(404).send("Endpoint notfound 404 !");
 });
 
 app.listen(port, () => {

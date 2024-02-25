@@ -4,9 +4,9 @@ import jwt from "jsonwebtoken";
 import { db } from "../lib/db";
 import { Request, Response } from "express";
 
-class AuthController {
+export default class AuthController {
   static auth = async (req: Request, res: Response) => {
-    const token = req.cookies.token || null;
+    const token = (req.cookies && req.cookies.token) || null;
     if (!token) {
       return res.status(404).json({
         message: "token notfound!",
@@ -59,25 +59,21 @@ class AuthController {
       const token = jwt.sign(user.id, process.env.JWT_SECRET!);
       const tokenMaxAge = expiryMinutes * 60;
 
-      const response = res.json({
-        status: "success",
-        id: user.id,
-        token,
-      });
-
-      await Promise.all([
-        response.cookie("token", token, {
+      return res
+        .cookie("token", token, {
           httpOnly: true,
           path: "/",
           secure: process.env.NODE_ENV !== "development",
           maxAge: tokenMaxAge,
-        }),
-        response.cookie("logged-in", "true", {
+        })
+        .cookie("logged-in", "true", {
           maxAge: tokenMaxAge,
-        }),
-      ]);
-
-      return response;
+        })
+        .json({
+          status: "success",
+          id: user.id,
+          token,
+        });
     } catch (error) {
       return res.status(500).json({
         error,
@@ -123,15 +119,8 @@ class AuthController {
   };
 
   static signOut = async (req: Request, res: Response) => {
-    const response = res.json({
+    return res.clearCookie("token").clearCookie("logged-in").json({
       message: "now you are logout!",
     });
-    await Promise.all([
-      response.clearCookie("token"),
-      response.clearCookie("logged-in"),
-    ]);
-    return response;
   };
 }
-
-export default AuthController;
