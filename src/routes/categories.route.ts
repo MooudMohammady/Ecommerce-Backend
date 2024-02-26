@@ -1,16 +1,16 @@
 import { Router } from "express";
-import CategoryController from "../controllers/products.controller";
+import CategoriesController from "../controllers/categories.controller";
 import auth from "../middelwares/auth";
 
 const router = Router();
 
-router.get("/", CategoryController.getAll);
+router.get("/", CategoriesController.getAll);
 
-router.post("/", auth, CategoryController.postSingle);
+router.post("/", auth, CategoriesController.postSingle);
 
-router.put("/:id", auth, CategoryController.putSingle);
+router.put("/:id", auth, CategoriesController.putSingle);
 
-router.delete("/:id", auth, CategoryController.deleteSingle);
+router.delete("/:id", auth, CategoriesController.deleteSingle);
 
-const productsRoute = router;
-export default productsRoute;
+const categoriesRoute = router;
+export default categoriesRoute;

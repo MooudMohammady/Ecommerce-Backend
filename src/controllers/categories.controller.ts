@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 
 import { db } from "../lib/db";
 
-export default class CategoryController {
+export default class CategoriesController {
   static getAll = async (req: Request, res: Response) => {
     try {
       const category = await db.category.findMany({
