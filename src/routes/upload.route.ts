@@ -5,7 +5,7 @@ import upload from "../lib/upload";
 
 const router = Router();
 
-router.post("/", auth, upload.array("images"), UploadController.upload);
+router.post("/", auth, upload.single("image"), UploadController.upload);
 
 const uploadRoute = router;
 export default uploadRoute;

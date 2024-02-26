@@ -1,12 +1,20 @@
 import { Request, Response } from "express";
+import { db } from "../lib/db";
 
 export default class UploadController {
   static upload = async (req: Request, res: Response) => {
-    const locations = (req.files as any[]).map((f: any) => f.location);
+    const file = await db.file.create({
+      data: {
+        //@ts-ignore
+        userId: req.userId,
+        //@ts-ignore
+        url: req.file!.location,
+      },
+    });
 
     res.json({
       message: "uploaded",
-      data: locations,
+      data: file,
     });
   };
 }

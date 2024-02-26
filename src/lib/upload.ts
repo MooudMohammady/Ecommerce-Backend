@@ -18,7 +18,6 @@ const upload = multer({
     s3,
     bucket: process.env.LIARA_BUCKET_NAME!,
     key: function (req, file, cb) {
-      console.log(file);
       cb(null, `${Date.now()}.${file.originalname.split(".").pop()}`);
     },
   }),
