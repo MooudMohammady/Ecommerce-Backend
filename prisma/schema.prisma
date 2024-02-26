@@ -7,6 +7,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  SUPER_ADMIN
+  ADMIN
+  PERSON
+}
+
 model User {
   id       String  @id @default(cuid())
   email    String? @unique
@@ -20,7 +26,7 @@ model User {
   emailUnsubscribeToken String? @unique @default(cuid())
   referralCode          String? @unique
 
-  isAdmin           Boolean @default(false)
+  Role              Role    @default(PERSON)
   isBanned          Boolean @default(false)
   isEmailVerified   Boolean @default(false)
   isPhoneVerified   Boolean @default(false)
