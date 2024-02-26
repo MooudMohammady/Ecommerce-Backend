@@ -5,6 +5,7 @@ import morgan from "morgan";
 import productsRoute from "./routes/products.route";
 import categoriesRoute from "./routes/categories.route";
 import uploadRoute from "./routes/upload.route";
+import cardRoute from "./routes/cards.route";
 
 //For env File
 dotenv.config();
@@ -24,6 +25,7 @@ app.use(morgan("tiny"));
 app.use("/auth", authRoute);
 app.use("/products", productsRoute);
 app.use("/categories", categoriesRoute);
+app.use("/card", cardRoute);
 
 app.get("*", (req, res) => {
   res.status(404).send("Endpoint notfound 404 !");
