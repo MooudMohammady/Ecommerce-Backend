@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import jwt from "jsonwebtoken";
 
 import { db } from "../lib/db";
 
@@ -33,6 +32,21 @@ export default class ProductsController {
   };
   static postSingle = async (req: Request, res: Response) => {
     try {
+      const {
+        title,
+        thumbnail,
+        images,
+        description,
+        discount,
+        isPhysical,
+        keywords,
+        price,
+        stock,
+        metadata,
+        isAvailable,
+        isFeatured,
+        categorie,
+      } = req.body;
       const { product } = await db.user.update({
         where: {
           //@ts-ignore
@@ -41,7 +55,28 @@ export default class ProductsController {
         data: {
           product: {
             create: {
-              ...req.body,
+              title,
+              thumbnail,
+              images,
+              description,
+              discount,
+              isPhysical,
+              keywords,
+              price,
+              stock,
+              metadata,
+              isAvailable,
+              isFeatured,
+              categories: {
+                connectOrCreate: {
+                  where: {
+                    title: categorie,
+                  },
+                  create: {
+                    title: categorie,
+                  },
+                },
+              },
             },
           },
         },
@@ -59,6 +94,22 @@ export default class ProductsController {
   };
   static putSingle = async (req: Request, res: Response) => {
     try {
+      const {
+        title,
+        thumbnail,
+        images,
+        description,
+        discount,
+        isPhysical,
+        keywords,
+        price,
+        stock,
+        metadata,
+        isAvailable,
+        isFeatured,
+        categorie,
+      } = req.body;
+
       const productId = req.params.id;
 
       let product = await db.product.findFirst({
@@ -75,7 +126,28 @@ export default class ProductsController {
           id: productId,
         },
         data: {
-          ...req.body,
+          title,
+          thumbnail,
+          images,
+          description,
+          discount,
+          isPhysical,
+          keywords,
+          price,
+          stock,
+          metadata,
+          isAvailable,
+          isFeatured,
+          categories: {
+            connectOrCreate: {
+              where: {
+                title: categorie,
+              },
+              create: {
+                title: categorie,
+              },
+            },
+          },
         },
       });
       return res.json({
