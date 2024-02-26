@@ -4,12 +4,16 @@ import authRoute from "./routes/auth.route";
 import morgan from "morgan";
 import productsRoute from "./routes/products.route";
 import categoriesRoute from "./routes/categories.route";
+import uploadRoute from "./routes/upload.route";
 
 //For env File
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3040;
+
+// setup routes without bodyParser
+app.use("/upload", uploadRoute);
 
 // setup middelware
 app.use(express.urlencoded({ extended: true }));
