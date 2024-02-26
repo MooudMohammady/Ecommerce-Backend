@@ -13,9 +13,9 @@ router.use(async(req, res, next) => {
         return next(createError.Unauthorized())
     }
     try {
-      const decoded = jwt.verify(token,process.env.JWT_SECRET!);
+      const userId = jwt.verify(token,process.env.JWT_SECRET!);
       //@ts-ignore
-      req.userId = decoded.userId
+      req.userId = userId
       next()
     } catch (error : any) {
       next(createError.Unauthorized(error?.message))

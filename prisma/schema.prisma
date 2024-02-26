@@ -37,6 +37,7 @@ model User {
   productReviews ProductReview[]
   errors         Error[]
   files          File[]
+  product        Product[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -87,19 +88,20 @@ model Author {
   updatedAt DateTime @updatedAt
 }
 
-model Brand {
-  id          String  @id @default(cuid())
-  title       String  @unique
-  description String?
-  logo        String?
+// model Brand {
+//   id          String  @id @default(cuid())
+//   title       String  @unique
+//   description String?
+//   logo        String?
 
-  products Product[]
-}
+//   products Product[]
+// }
 
 model Product {
   id          String   @id @default(cuid())
   title       String
   description String?
+  thumbnail   String?
   images      String[]
   keywords    String[]
   metadata    Json?
@@ -117,15 +119,17 @@ model Product {
   wishlists      User[]          @relation("Wishlist")
   productReviews ProductReview[]
 
-  brand   Brand  @relation(fields: [brandId], references: [id])
-  brandId String
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+  // brand   Brand  @relation(fields: [brandId], references: [id])
+  // brandId String
 
   categories Category[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@index([brandId])
+  // @@index([brandId])
 }
 
 model Category {
