@@ -3,10 +3,24 @@ import jwt from "jsonwebtoken";
 
 import { db } from "../lib/db";
 import { Request, Response } from "express";
+import getCookies from "../lib/getCookies";
+
+function exclude<T, Key extends keyof T>(
+  user: T,
+  keys: Key[]
+): Omit<T, Key> {
+  const result: any = {};
+  for (const [key, value] of Object.entries(user!)) {
+    if (!keys.includes(key as Key)) {
+      result[key] = value;
+    }
+  }
+  return result;
+}
 
 export default class AuthController {
   static auth = async (req: Request, res: Response) => {
-    const token = (req.cookies && req.cookies.token) || null;
+    const token = getCookies(req)?.token || null;
     if (!token) {
       return res.status(404).json({
         message: "token notfound!",
@@ -17,7 +31,7 @@ export default class AuthController {
       const decoded = jwt.verify(token, process.env.JWT_SECRET!) as {
         userId: string;
       };
-      const user = await db.user.findUnique({
+      const user = await db.user.findFirst({
         where: { id: decoded.userId },
       });
 
@@ -25,8 +39,9 @@ export default class AuthController {
         throw new Error("user notfound");
       }
 
+      const userWithoutPassword = exclude(user!, ["password"]);
       return res.json({
-        user,
+        userWithoutPassword,
       });
     } catch (error) {
       // Handle invalid token or other authentication failures
