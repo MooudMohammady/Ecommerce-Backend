@@ -45,7 +45,7 @@ export default class ProductsController {
         metadata,
         isAvailable,
         isFeatured,
-        categorie,
+        category,
       } = req.body;
       const { product } = await db.user.update({
         where: {
@@ -70,10 +70,10 @@ export default class ProductsController {
               categories: {
                 connectOrCreate: {
                   where: {
-                    title: categorie,
+                    title: category,
                   },
                   create: {
-                    title: categorie,
+                    title: category,
                   },
                 },
               },
@@ -107,7 +107,7 @@ export default class ProductsController {
         metadata,
         isAvailable,
         isFeatured,
-        categorie,
+        category,
       } = req.body;
 
       const productId = req.params.id;
@@ -141,10 +141,10 @@ export default class ProductsController {
           categories: {
             connectOrCreate: {
               where: {
-                title: categorie,
+                title: category,
               },
               create: {
-                title: categorie,
+                title: category,
               },
             },
           },
