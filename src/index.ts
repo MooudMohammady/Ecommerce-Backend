@@ -6,6 +6,7 @@ import productsRoute from "./routes/products.route";
 import categoriesRoute from "./routes/categories.route";
 import uploadRoute from "./routes/upload.route";
 import cardRoute from "./routes/cards.route";
+import orderRoute from "./routes/order.route";
 
 //For env File
 dotenv.config();
@@ -26,6 +27,7 @@ app.use("/auth", authRoute);
 app.use("/products", productsRoute);
 app.use("/categories", categoriesRoute);
 app.use("/card", cardRoute);
+app.use("/orders", orderRoute);
 
 app.get("*", (req, res) => {
   res.status(404).send("Endpoint notfound 404 !");
