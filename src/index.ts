@@ -28,6 +28,7 @@ app.use("/products", productsRoute);
 app.use("/categories", categoriesRoute);
 app.use("/card", cardRoute);
 app.use("/orders", orderRoute);
+app.use("/swagger", swa)
 
 app.get("*", (req, res) => {
   res.status(404).send("Endpoint notfound 404 !");
