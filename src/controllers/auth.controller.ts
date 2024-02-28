@@ -5,10 +5,7 @@ import { db } from "../lib/db";
 import { Request, Response } from "express";
 import getCookies from "../lib/getCookies";
 
-function exclude<T, Key extends keyof T>(
-  user: T,
-  keys: Key[]
-): Omit<T, Key> {
+function exclude<T, Key extends keyof T>(user: T, keys: Key[]): Omit<T, Key> {
   const result: any = {};
   for (const [key, value] of Object.entries(user!)) {
     if (!keys.includes(key as Key)) {
@@ -40,9 +37,7 @@ export default class AuthController {
       }
 
       const userWithoutPassword = exclude(user!, ["password"]);
-      return res.json({
-        userWithoutPassword,
-      });
+      return res.json(userWithoutPassword);
     } catch (error) {
       // Handle invalid token or other authentication failures
       console.error(error);
@@ -66,8 +61,10 @@ export default class AuthController {
       }
       const isValid = await bcrypt.compare(password, user.password);
       if (!isValid) {
-        return res.json({
-          data: null,
+        return res.status(401).json({
+          status: "failed",
+          id: null,
+          token: null,
           message: "invalid eamil or password",
         });
       }
@@ -101,7 +98,7 @@ export default class AuthController {
       const { email, phone, password, name } = await req.body;
       const hashPassword = await bcrypt.hash(password, 2);
 
-      const user = await db.user.findFirst({
+      let user = await db.user.findFirst({
         where: {
           email: email.toLowerCase().toString(),
         },
@@ -113,7 +110,7 @@ export default class AuthController {
         });
       }
 
-      await db.user.create({
+      user = await db.user.create({
         data: {
           email,
           phone,
@@ -122,9 +119,7 @@ export default class AuthController {
         },
       });
 
-      return res.json({
-        message: "succses",
-      });
+      return res.json(user);
     } catch (error) {
       console.log(error);
       return res.status(500).json({

@@ -16,11 +16,6 @@ const swaggerDocs = swaggerJSDoc({
       },
       version: "1.0.0",
     },
-    servers: [
-      {
-        url: "http://localhost:3040",
-      },
-    ],
     tags: [{ name: "Auth" }],
   },
   apis: ["src/routes/*.ts","src/lib/swagger.ts"],
