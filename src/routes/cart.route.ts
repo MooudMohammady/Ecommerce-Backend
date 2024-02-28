@@ -1,14 +1,14 @@
 import { Router } from "express";
 import CartController from "../controllers/cart.controller";
-import auth from "../middlewares/auth";
+import adminCheck from "../middlewares/adminCheck";
 
 const router = Router();
 
-router.get("/", auth, CartController.getCart);
+router.get("/", adminCheck, CartController.getCart);
 
-router.post("/", auth, CartController.addToCart);
+router.post("/", adminCheck, CartController.addToCart);
 
-router.delete("/:cartItemId", auth, CartController.removeFromCart);
+router.delete("/:cartItemId", adminCheck, CartController.removeFromCart);
 
 const cartRoute = router;
 export default cartRoute;

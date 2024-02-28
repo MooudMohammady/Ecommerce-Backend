@@ -1,16 +1,18 @@
 import { Router } from "express";
 import ProductController from "../controllers/product.controller";
-import auth from "../middlewares/auth";
+import adminCheck from "../middlewares/adminCheck";
 
 const router = Router();
 
 router.get("/", ProductController.getAll);
 
-router.post("/", auth, ProductController.postSingle);
+router.get("/:id", ProductController.getSingle);
 
-router.put("/:id", auth, ProductController.putSingle);
+router.post("/", adminCheck, ProductController.postSingle);
 
-router.delete("/:id", auth, ProductController.deleteSingle);
+router.put("/:id", adminCheck, ProductController.putSingle);
+
+router.delete("/:id", adminCheck, ProductController.deleteSingle);
 
 const productRoute = router;
 export default productRoute;
