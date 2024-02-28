@@ -99,4 +99,16 @@ export default authRoute;
  *          application/json:
  *            example:
  *              message: user founded
+ * /auth/sign-out:
+ *  get:
+ *    tags:
+ *      - Auth
+ *    description: logout from your account
+ *    responses:
+ *      200:
+ *        description: Successful
+ *        content:
+ *          application/json:
+ *            example:
+ *              message: now you are logout!
  */
