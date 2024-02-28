@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 
 import { db } from "../lib/db";
 
-export default class ProductsController {
+export default class ProductController {
   static getAll = async (req: Request, res: Response) => {
     try {
       const products = await db.product.findMany();

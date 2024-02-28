@@ -2,10 +2,10 @@ import express from "express";
 import dotenv from "dotenv";
 import authRoute from "./routes/auth.route";
 import morgan from "morgan";
-import productsRoute from "./routes/products.route";
-import categoriesRoute from "./routes/categories.route";
+import productRoute from "./routes/product.route";
+import categoryRoute from "./routes/category.route";
 import uploadRoute from "./routes/upload.route";
-import cardRoute from "./routes/cards.route";
+import cartRoute from "./routes/cart.route";
 import orderRoute from "./routes/order.route";
 import setupSwaggerRoute from "./lib/swagger";
 
@@ -28,9 +28,9 @@ app.use(morgan("tiny"));
 
 // setup routes
 app.use("/auth", authRoute);
-app.use("/products", productsRoute);
-app.use("/categories", categoriesRoute);
-app.use("/card", cardRoute);
+app.use("/products", productRoute);
+app.use("/categories", categoryRoute);
+app.use("/carts", cartRoute);
 app.use("/orders", orderRoute);
 
 

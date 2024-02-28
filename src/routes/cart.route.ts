@@ -1,5 +1,5 @@
 import { Router } from "express";
-import CartController from "../controllers/cards.controller";
+import CartController from "../controllers/cart.controller";
 import auth from "../middlewares/auth";
 
 const router = Router();
@@ -10,5 +10,5 @@ router.post("/", auth, CartController.addToCart);
 
 router.delete("/:cartItemId", auth, CartController.removeFromCart);
 
-const cardRoute = router;
-export default cardRoute;
+const cartRoute = router;
+export default cartRoute;
