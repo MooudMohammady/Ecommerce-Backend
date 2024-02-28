@@ -34,7 +34,9 @@ router.use(
 const setupSwaggerRoute = router;
 export default setupSwaggerRoute;
 
-/**
+
+// Schemas
+/** User
  * @swagger
  * components:
  *  schemas:
@@ -58,6 +60,7 @@ export default setupSwaggerRoute;
  *          type: string
  *          default: PERSON
  *          enum: [PERSON,ADMIN,SUPER_ADMIN]
+ *          readOnly: true
  *        Product:
  *          type: array
  *          items:
@@ -66,6 +69,11 @@ export default setupSwaggerRoute;
  *      required:
  *        - email
  *        - password
+ */
+/** Product
+ * @swagger
+ * components:
+ *  schemas:
  *    Product:
  *      properties:
  *        id:
@@ -75,18 +83,81 @@ export default setupSwaggerRoute;
  *          type: string
  *        description:
  *          type: string
+ *          nullable: true
  *        thumbnail:
  *          type: string
+ *          nullable: true
  *        images:
  *          type: array
  *          items: 
  *             type: string
+ *          nullable: true
  *        price:
  *          type: number
  *          format: float
+ *          default: 100
  *        discount:
  *          type: number
  *          format: float
+ *          default: 0
  *        stock:
  *          type: number
+ *          default: 0
+ *        isPhysical:
+ *          type: boolean
+ *          default: true
+ *        isAvailable:
+ *          type: boolean
+ *          default: false
+ *        isFeatured:
+ *          type: boolean
+ *          default: false
+ *        category:
+ *          type: string
+ *          writeOnly: true
+ *        user:
+ *          type: object
+ *          $ref: '#/components/schemas/User'
+ *          readOnly: true
+ *        categories:
+ *          type: array
+ *          items:
+ *            $ref: '#/components/schemas/Category'
+ *          readOnly: true
+ *        createdAt:
+ *          type: string
+ *          readOnly: true
+ *        updatedAt:
+ *          type: string
+ *          readOnly: true
+ *      required:
+ *        - title
  */
+/** Category
+ * @swagger
+ * components:
+ *  schemas:
+ *    Category:
+ *      properties:
+ *        id:
+ *          type: string
+ *          readOnly: true
+ *        title:
+ *          type: string
+ *        description:
+ *          type: string
+ *          nullable: true
+ *        products:
+ *          type: array
+ *          items:
+ *            $ref: '#/components/schemas/Product'
+ *        createdAt:
+ *          type: string
+ *          readOnly: true
+ *        updatedAt:
+ *          type: string
+ *          readOnly: true
+ *      required:
+ *        - title
+ */
+
