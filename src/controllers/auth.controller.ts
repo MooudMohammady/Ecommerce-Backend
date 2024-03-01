@@ -4,16 +4,7 @@ import jwt from "jsonwebtoken";
 import { db } from "../lib/db";
 import { Request, Response } from "express";
 import getCookies from "../lib/getCookies";
-
-function exclude<T, Key extends keyof T>(user: T, keys: Key[]): Omit<T, Key> {
-  const result: any = {};
-  for (const [key, value] of Object.entries(user!)) {
-    if (!keys.includes(key as Key)) {
-      result[key] = value;
-    }
-  }
-  return result;
-}
+import exclude from "../lib/exclude";
 
 export default class AuthController {
   static auth = async (req: Request, res: Response) => {
