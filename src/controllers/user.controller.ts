@@ -46,7 +46,8 @@ export default class UserController {
   }
   static async changePassword(req: Request, res: Response) {
     try {
-      const userId = req.params.id;
+      //@ts-ignore
+      const userId = req.userId;
       const { newPassword, password } = await req.body;
 
       let user = await db.user.findFirstOrThrow({
@@ -80,6 +81,49 @@ export default class UserController {
         status: "Success",
         message: "Password has successfuly changed.",
       });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({
+        error,
+      });
+    }
+  }
+  static async update(req: Request, res: Response) {
+    try {
+      //@ts-ignore
+      const userId = req.userId;
+      const { email, phone, name } = await req.body;
+
+      let user = await db.user.findFirstOrThrow({
+        where: { id: userId },
+      });
+      if (!user) {
+        return res.status(404).json({
+          message: "user not founded",
+        });
+      }
+
+      let user2 = await db.user.findFirst({
+        where: { email },
+      });
+      if(user2){
+        return res.status(401).json({
+          message:"Email already exists !"
+        })
+      }
+
+      user = await db.user.update({
+        where: {
+          id: userId,
+        },
+        data: {
+          email,
+          phone,
+          name,
+        },
+      });
+
+      return res.json(user);
     } catch (error) {
       console.error(error);
       return res.status(500).json({
