@@ -20,7 +20,7 @@ router.use(async (req, res, next) => {
         id: userId as string,
       },
     });
-    if (user?.Role !== "SUPER_ADMIN" && user?.Role !== "ADMIN" && user?.Role !== "AUTHOR")
+    if (user?.Role !== "SUPER_ADMIN" && user?.Role !== "ADMIN")
       next(
         createError.Forbidden(
           "Access denied. You do not have permission to perform this action"
@@ -36,5 +36,5 @@ router.use(async (req, res, next) => {
   }
 });
 
-const authorAndAdminCheck = router;
-export default authorAndAdminCheck;
+const AdminCheck = router;
+export default AdminCheck;
