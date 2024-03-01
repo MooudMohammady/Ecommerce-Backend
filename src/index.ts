@@ -8,12 +8,13 @@ import uploadRoute from "./routes/upload.route";
 import cartRoute from "./routes/cart.route";
 import orderRoute from "./routes/order.route";
 import setupSwaggerRoute from "./lib/swagger";
+import userRoute from "./routes/user.route";
 
 //For env File
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 3040;
+const port = process.env.PORT || 4040;
 
 // swtup swagger
 app.use(setupSwaggerRoute)
@@ -32,6 +33,7 @@ app.use("/products", productRoute);
 app.use("/categories", categoryRoute);
 app.use("/carts", cartRoute);
 app.use("/orders", orderRoute);
+app.use("/users", userRoute);
 
 
 app.get("*", (req, res) => {
