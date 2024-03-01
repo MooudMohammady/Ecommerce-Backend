@@ -9,7 +9,22 @@ export default class UserController {
       const userId = req.params.id;
       const Role = (await req.body.role) as Role;
 
-      const user = await db.user.update({
+      let user = await db.user.findFirstOrThrow({
+        where: { id: userId },
+      });
+      if (!user) {
+        return res.status(404).json({
+          message: "user not founded",
+        });
+      }
+      //@ts-ignore
+      if (req.userRole !== "SUPER_ADMIN") {
+        return res.status(403).json({
+          message: "You are not SUPER ADMIN",
+        });
+      }
+
+      user = await db.user.update({
         where: {
           id: userId,
         },

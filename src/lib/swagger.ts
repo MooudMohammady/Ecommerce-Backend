@@ -31,6 +31,17 @@ export default setupSwaggerRoute;
 
 
 // Schemas
+/** Authentication
+ * @swagger
+ * components:
+ *  securitySchemes:
+ *    bearerAuth:
+ *      type: http
+ *      scheme: bearer
+ *      bearerFormat: JWT
+ * security:
+ *  - bearerAuth: []
+ */
 /** User
  * @swagger
  * components:
