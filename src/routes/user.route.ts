@@ -4,7 +4,9 @@ import AdminCheck from "../middlewares/adminCheck";
 
 const router = Router();
 
-router.patch("/change-role/:id",AdminCheck, UserController.changeRole);
+router.patch("/change-role/:id", AdminCheck, UserController.changeRole);
+
+router.patch("/change-password/:id", UserController.changePassword);
 
 const userRoute = router;
 export default userRoute;
@@ -41,6 +43,60 @@ export default userRoute;
  *          application/json:
  *            schema:
  *              $ref: '#/components/schemas/User'
+ *      404:
+ *        description: Not Found
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                message:
+ *                  type: string
+ *                  example: user not found
+ * /users/change-passowrd/{id}:
+ *  patch:
+ *    tags:
+ *      - User
+ *    description: Change passowrd of user
+ *    security:
+ *      - bearerAuth: []
+ *    parameters:
+ *      - name: id
+ *        in: path
+ *        description: User ID
+ *        required: true
+ *        schema:
+ *          type: string
+ *    requestBody:
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              passowrd:
+ *                type: string
+ *                example: NewPassword
+ *    responses:
+ *      200:
+ *        description: Successful
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                message: 
+ *                  type: string
+ *                  example: Password has successfuly changed.
+ *      401:
+ *        description: Invalid password
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                message:
+ *                  type: string
+ *                  example: Invalid password
  *      404:
  *        description: Not Found
  *        content:
