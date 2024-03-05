@@ -6,11 +6,13 @@ import { Request, Response } from "express";
 import exclude from "../lib/exclude";
 
 export default class AuthController {
+  private static refreshTokens: string[] = [];
+
   static auth = async (req: Request, res: Response) => {
-    const authHeader = req.headers['authorization'];
+    const authHeader = req.headers["authorization"];
     console.log(req.headers);
-    
-    const token = authHeader && authHeader.split(' ')[1];
+
+    const token = authHeader && authHeader.split(" ")[1];
     if (!token) {
       return res.status(404).json({
         message: "token notfound!",
@@ -21,6 +23,9 @@ export default class AuthController {
       const decoded = jwt.verify(token, process.env.JWT_SECRET!) as {
         userId: string;
       };
+
+      console.log(decoded);
+      
       const user = await db.user.findFirst({
         where: { id: decoded.userId },
       });
@@ -60,16 +65,26 @@ export default class AuthController {
           message: "invalid eamil or password",
         });
       }
-      const access = jwt.sign({id:user.id}, process.env.JWT_SECRET!, {
-        expiresIn: 600,
-      });
-      const refresh = jwt.sign(user.id, process.env.JWT_SECRET!);
+      const accessToken = jwt.sign(
+        { userId: user.id },
+        process.env.JWT_SECRET!,
+        {
+          expiresIn: 600,
+        }
+      );
+      const refreshToken = jwt.sign(
+        { userId: user.id },
+        process.env.JWT_SECRET!
+      );
+
+      // Set refersh token in refreshTokens array
+      AuthController.refreshTokens.push(refreshToken);
 
       return res.json({
         status: "success",
         id: user.id,
-        refresh,
-        access,
+        refreshToken,
+        accessToken,
       });
     } catch (error) {
       console.error(error);
@@ -115,31 +130,51 @@ export default class AuthController {
   };
 
   static signOut = async (req: Request, res: Response) => {
-    return res.clearCookie("token").clearCookie("logged-in").json({
-      message: "now you are logout!",
-    });
+    const refreshToken = (await req.body.refresh) || (await req.body.token) || (await req.body.refreshToken);
+    if (!refreshToken) {
+      return res.status(401).json({
+        error: "Refresh token not found",
+      });
+    }
+    AuthController.refreshTokens = this.refreshTokens.filter(
+      (rtoken) => rtoken !== refreshToken
+    );
+    return res.sendStatus(204);
   };
 
   static async refresh(req: Request, res: Response) {
     try {
-      const refresh = (await req.body.refresh) || (await req.body.token);
-      if (!refresh) {
-        res.status(401).json({
-          message: "refresh token notfound",
+      const refreshToken = (await req.body.refresh) || (await req.body.token) || (await req.body.refreshToken);
+      // Token not found
+      if (!refreshToken) {
+        return res.status(401).json({
+          message: "Authorization failed",
         });
       }
-      jwt.verify(refresh, process.env.JWT_SECRET!, (err: any, id: any) => {
-        if (err)
-          return res.status(403).json({
-            message: "Access denide! token is invalid",
+
+      // If the refresh token does not exist in the array
+      if (!AuthController.refreshTokens.includes(refreshToken)) {
+        return res.status(403).json({
+          message: "Access denied",
+        });
+      }
+
+      jwt.verify(
+        refreshToken,
+        process.env.JWT_SECRET!,
+        (err: any, data: any) => {
+          if (err)
+            return res.status(403).json({
+              message: "Access denied! Token is invalid",
+            });
+          const accessToken = jwt.sign({ userId:data.userId }, process.env.JWT_SECRET!, {
+            expiresIn: 600,
           });
-        const access = jwt.sign({ id }, process.env.JWT_SECRET!, {
-          expiresIn: 600,
-        });
-        return res.json({
-          access,
-        });
-      });
+          return res.json({
+            accessToken,
+          });
+        }
+      );
     } catch (error) {
       console.log(error);
       return res.status(500).json({

@@ -8,7 +8,7 @@ router.post("/sign-in", AuthController.signIn);
 
 router.post("/sign-up", AuthController.signUp);
 
-router.get("/sign-out", AuthController.signOut);
+router.delete("/sign-out", AuthController.signOut);
 
 router.post("/refresh", AuthController.refresh)
 
@@ -105,10 +105,18 @@ export default authRoute;
  *            example:
  *              message: user founded
  * /auth/sign-out:
- *  get:
+ *  delete:
  *    tags:
  *      - Auth
  *    description: logout from your account
+ *    requestBody:
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              refresh:
+ *                type: string
  *    responses:
  *      200:
  *        description: Successful

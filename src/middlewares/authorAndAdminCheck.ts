@@ -18,11 +18,11 @@ router.use(async (req, res, next) => {
   }
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET!) as {
-      id: string;
+      userId: string;
     };
     const user = await db.user.findFirst({
       where: {
-        id: decoded.id as string,
+        id: decoded.userId as string,
       },
     });
     if (
@@ -38,7 +38,7 @@ router.use(async (req, res, next) => {
     //@ts-ignore
     req.userRole = user?.Role;
     //@ts-ignore
-    req.userId = userId;
+    req.userId = decoded.userId;
     next();
   } catch (error: any) {
     next(createError.Unauthorized(error?.message));
