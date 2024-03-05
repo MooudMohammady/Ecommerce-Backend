@@ -17,10 +17,12 @@ router.use(async (req, res, next) => {
     return next(createError.Unauthorized());
   }
   try {
-    const userId = jwt.verify(token, process.env.JWT_SECRET!);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as {
+      id: string;
+    };
     const user = await db.user.findFirst({
       where: {
-        id: userId as string,
+        id: decoded.id as string,
       },
     });
     if (

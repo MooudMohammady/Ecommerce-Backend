@@ -2,6 +2,8 @@ import express from "express";
 import dotenv from "dotenv";
 import authRoute from "./routes/auth.route";
 import morgan from "morgan";
+import cors from "cors";
+
 import productRoute from "./routes/product.route";
 import categoryRoute from "./routes/category.route";
 import uploadRoute from "./routes/upload.route";
@@ -23,6 +25,7 @@ app.use(setupSwaggerRoute)
 app.use("/upload", uploadRoute);
 
 // setup middelware
+app.use(cors())
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(morgan("tiny"));

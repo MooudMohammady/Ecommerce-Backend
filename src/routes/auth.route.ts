@@ -10,6 +10,8 @@ router.post("/sign-up", AuthController.signUp);
 
 router.get("/sign-out", AuthController.signOut);
 
+router.post("/refresh", AuthController.refresh)
+
 const authRoute = router;
 export default authRoute;
 /**
@@ -19,6 +21,8 @@ export default authRoute;
  *    tags:
  *      - Auth
  *    description: return your profile details
+ *    security:
+ *      - bearerAuth: []
  *    responses:
  *      200:
  *        description: Successful
@@ -40,7 +44,7 @@ export default authRoute;
  *  post:
  *    tags:
  *      - Auth
- *    description : login for get token
+ *    description : login for get tokens
  *    requestBody:
  *      content:
  *        application/json:
@@ -60,7 +64,8 @@ export default authRoute;
  *            example:
  *              status: success
  *              id: cs23fasfduhasipfu
- *              token: a21j0jsdfjjalsfasf78sdahfavnlkjenerunvi
+ *              refresh: a21j0jsdfjjalsfasf78sdahfavnlkjenerunvi
+ *              access: a21jsafdsafdfasfas8sdahfavnlkjenerunvi
  *      401:
  *        description: Invalid password or email
  *        content:
@@ -111,4 +116,40 @@ export default authRoute;
  *          application/json:
  *            example:
  *              message: now you are logout!
+ * /auth/refresh:
+ *  post:
+ *    tags:
+ *      - Auth
+ *    description : get access token by refresh token
+ *    requestBody:
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              refresh:
+ *                type: string
+ *    responses:
+ *      200:
+ *        description: Successful
+ *        content:
+ *          application/json:
+ *            example:
+ *              access: a21j0jsdfjjalsfasf78sdahfavnlkjenerunvi
+ *      401:
+ *        description: Invalid Refresh token
+ *        content:
+ *          application/json:
+ *            example:
+ *              status: failed
+ *              id: null
+ *              token: null
+ *              message: Refresh token invalid
+ *      404:
+ *        description: refresh token not founded
+ *        content:
+ *          application/json:
+ *            example:
+ *              message: refresh token not founded
+
  */

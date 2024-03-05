@@ -8,7 +8,7 @@ router.put("/", UserController.update);
 
 router.patch("/change-password/:id", UserController.changePassword);
 
-router.patch("/change-role", AdminCheck, UserController.changeRole);
+router.patch("/change-role/:id", AdminCheck, UserController.changeRole);
 
 const userRoute = router;
 export default userRoute;

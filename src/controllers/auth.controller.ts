@@ -3,12 +3,14 @@ import jwt from "jsonwebtoken";
 
 import { db } from "../lib/db";
 import { Request, Response } from "express";
-import getCookies from "../lib/getCookies";
 import exclude from "../lib/exclude";
 
 export default class AuthController {
   static auth = async (req: Request, res: Response) => {
-    const token = getCookies(req)?.token || null;
+    const authHeader = req.headers['authorization'];
+    console.log(req.headers);
+    
+    const token = authHeader && authHeader.split(' ')[1];
     if (!token) {
       return res.status(404).json({
         message: "token notfound!",
@@ -41,8 +43,7 @@ export default class AuthController {
   static signIn = async (req: Request, res: Response) => {
     const { email, password } = await req.body;
     try {
-      const expiryMinutes = 30 * 24 * 60;
-      const user = await db.user.findFirstOrThrow({
+      const user = await db.user.findFirst({
         where: { email: email.toLowerCase().toString() },
       });
       if (!user) {
@@ -59,25 +60,19 @@ export default class AuthController {
           message: "invalid eamil or password",
         });
       }
-      const token = jwt.sign(user.id, process.env.JWT_SECRET!);
-      const tokenMaxAge = expiryMinutes * 60;
+      const access = jwt.sign({id:user.id}, process.env.JWT_SECRET!, {
+        expiresIn: 600,
+      });
+      const refresh = jwt.sign(user.id, process.env.JWT_SECRET!);
 
-      return res
-        .cookie("token", token, {
-          httpOnly: true,
-          path: "/",
-          secure: process.env.NODE_ENV !== "development",
-          maxAge: tokenMaxAge,
-        })
-        .cookie("logged-in", "true", {
-          maxAge: tokenMaxAge,
-        })
-        .json({
-          status: "success",
-          id: user.id,
-          token,
-        });
+      return res.json({
+        status: "success",
+        id: user.id,
+        refresh,
+        access,
+      });
     } catch (error) {
+      console.error(error);
       return res.status(500).json({
         error,
       });
@@ -124,4 +119,32 @@ export default class AuthController {
       message: "now you are logout!",
     });
   };
+
+  static async refresh(req: Request, res: Response) {
+    try {
+      const refresh = (await req.body.refresh) || (await req.body.token);
+      if (!refresh) {
+        res.status(401).json({
+          message: "refresh token notfound",
+        });
+      }
+      jwt.verify(refresh, process.env.JWT_SECRET!, (err: any, id: any) => {
+        if (err)
+          return res.status(403).json({
+            message: "Access denide! token is invalid",
+          });
+        const access = jwt.sign({ id }, process.env.JWT_SECRET!, {
+          expiresIn: 600,
+        });
+        return res.json({
+          access,
+        });
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({
+        error,
+      });
+    }
+  }
 }
