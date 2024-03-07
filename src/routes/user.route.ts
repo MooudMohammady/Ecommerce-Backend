@@ -10,12 +10,14 @@ router.patch("/change-password/:id", UserController.changePassword);
 
 router.patch("/change-role/:id", AdminCheck, UserController.changeRole);
 
+router.delete("/delete/:id", AdminCheck, UserController.deleteUser);
+
 const userRoute = router;
 export default userRoute;
 
 /**
  * @swagger
- * /users:
+ * /user:
  *  put:
  *    tags:
  *      - User
@@ -64,7 +66,7 @@ export default userRoute;
  *                message:
  *                  type: string
  *                  example: user not found
- * /users/change-role/{id}:
+ * /user/change-role/{id}:
  *  patch:
  *    tags:
  *      - User
@@ -104,7 +106,7 @@ export default userRoute;
  *                message:
  *                  type: string
  *                  example: user not found
- * /users/change-passowrd:
+ * /user/change-passowrd/{id}:
  *  patch:
  *    tags:
  *      - User
@@ -141,6 +143,44 @@ export default userRoute;
  *                message:
  *                  type: string
  *                  example: Invalid password
+ *      404:
+ *        description: Not Found
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                message:
+ *                  type: string
+ *                  example: user not found
+ * /user/delete/{id}:
+ *  delete:
+ *    tags:
+ *      - User
+ *    description: Delete user acount
+ *    security:
+ *      - bearerAuth: []
+ *    responses:
+ *      200:
+ *        description: Successful
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                message: 
+ *                  type: string
+ *                  example: User deleted successfuly.
+ *      403:
+ *        description: When you are not SUPER ADMIN
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                message:
+ *                  type: string
+ *                  example: You are not SUPER ADMIN
  *      404:
  *        description: Not Found
  *        content:

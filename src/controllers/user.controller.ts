@@ -106,10 +106,10 @@ export default class UserController {
       let user2 = await db.user.findFirst({
         where: { email },
       });
-      if(user2){
+      if (user2) {
         return res.status(401).json({
-          message:"Email already exists !"
-        })
+          message: "Email already exists !",
+        });
       }
 
       user = await db.user.update({
@@ -124,6 +124,41 @@ export default class UserController {
       });
 
       return res.json(user);
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({
+        error,
+      });
+    }
+  }
+  static async deleteUser(req: Request, res: Response) {
+    try {
+      //@ts-ignore
+      if (req.userRole !== "SUPER_ADMIN") {
+        return res.status(403).json({
+          message: "You are not SUPER ADMIN",
+        });
+      }
+
+      //@ts-ignore
+      const userId = req.userId;
+
+      let user = await db.user.findFirstOrThrow({
+        where: { id: userId },
+      });
+      if (!user) {
+        return res.status(404).json({
+          message: "user not founded",
+        });
+      }
+
+      await db.user.delete({
+        where: { id: userId },
+      });
+
+      return res.json({
+        message: "User deleted successfuly",
+      });
     } catch (error) {
       console.error(error);
       return res.status(500).json({

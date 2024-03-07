@@ -10,7 +10,6 @@ export default class AuthController {
 
   static auth = async (req: Request, res: Response) => {
     const authHeader = req.headers["authorization"];
-    console.log(req.headers);
 
     const token = authHeader && authHeader.split(" ")[1];
     if (!token) {
@@ -23,8 +22,6 @@ export default class AuthController {
       const decoded = jwt.verify(token, process.env.JWT_SECRET!) as {
         userId: string;
       };
-
-      console.log(decoded);
       
       const user = await db.user.findFirst({
         where: { id: decoded.userId },
