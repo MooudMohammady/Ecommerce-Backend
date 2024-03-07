@@ -6,7 +6,7 @@ const router = Router();
 
 router.put("/", UserController.update);
 
-router.patch("/change-password/:id", UserController.changePassword);
+router.patch("/forgot-password/:id", UserController.forgotPassword);
 
 router.patch("/change-role/:id", AdminCheck, UserController.changeRole);
 
@@ -106,7 +106,7 @@ export default userRoute;
  *                message:
  *                  type: string
  *                  example: user not found
- * /user/change-passowrd/{id}:
+ * /user/forgot-passowrd/{id}:
  *  patch:
  *    tags:
  *      - User

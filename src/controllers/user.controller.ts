@@ -44,7 +44,7 @@ export default class UserController {
       });
     }
   }
-  static async changePassword(req: Request, res: Response) {
+  static async forgotPassword(req: Request, res: Response) {
     try {
       //@ts-ignore
       const userId = req.userId;
