@@ -166,4 +166,23 @@ export default setupSwaggerRoute;
  *      required:
  *        - title
  */
-
+/** File
+ * @swagger
+ * components:
+ *  schemas:
+ *    File:
+ *      properties:
+ *        id:
+ *          type: string
+ *          readOnly: true
+ *        url:
+ *          type: string
+ *        userId:
+ *          type: string
+ *          readOnly: true
+ *        createdAt:
+ *          type: string
+ *          readOnly: true
+ *      required:
+ *        - url
+ */

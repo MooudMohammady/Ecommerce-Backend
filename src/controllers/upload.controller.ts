@@ -12,9 +12,6 @@ export default class UploadController {
       },
     });
 
-    res.json({
-      message: "uploaded",
-      data: file,
-    });
+    res.json(file);
   };
 }
