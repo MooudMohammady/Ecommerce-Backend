@@ -109,7 +109,7 @@ export default class OrderController {
             connect: { id: addressId },
           },
           orderItems: {
-            create: cart?.items.map((orderItem) => ({
+            create: cart?.items.map((orderItem : any) => ({
               count: orderItem.count,
               price: orderItem.product.price,
               discount: orderItem.product.discount,

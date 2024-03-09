@@ -1,14 +1,13 @@
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import { db } from "../lib/db";
-import { Role } from "@prisma/client";
 import exclude from "../lib/exclude";
 
 export default class UserController {
   static async changeRole(req: Request, res: Response) {
     try {
       const userId = req.params.id;
-      const Role = (await req.body.role) as Role;
+      const Role = req.body.role as any;
 
       let user = await db.user.findFirstOrThrow({
         where: { id: userId },
