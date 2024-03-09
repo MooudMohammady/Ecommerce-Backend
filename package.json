@@ -7,7 +7,7 @@
     "build": "npx tsc --noEmit",
     "start": "node dist/index.js",
     "dev": "nodemon ./src/index.ts",
-    "postinstall": "prisma generate --schema=./prisma/schema.prisma"
+    "prebuild" : "npx prisma generate"
   },
   "nodemonConfig": {
     "watch": [
