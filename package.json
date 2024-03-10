@@ -4,7 +4,7 @@
   "description": "",
   "main": "./dist/index.js",
   "scripts": {
-    "build": "npx tsc --noEmit",
+    "build": "npx tsc",
     "start": "node dist/index.js",
     "dev": "nodemon ./src/index.ts",
     "prebuild" : "npx prisma generate"

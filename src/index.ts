@@ -32,11 +32,11 @@ app.use(morgan("tiny"));
 
 // setup routes
 app.use("/auth", authRoute);
+app.use("/user", userRoute);
 app.use("/products", productRoute);
 app.use("/categories", categoryRoute);
 app.use("/carts", cartRoute);
 app.use("/orders", orderRoute);
-app.use("/user", userRoute);
 
 
 app.get("*", (req, res) => {

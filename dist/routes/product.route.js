@@ -1,22 +1,19 @@
-import { Router } from "express";
-import ProductController from "../controllers/product.controller";
-import adminCheck from "../middlewares/adminCheck";
-
-const router = Router();
-
-router.get("/", ProductController.getAll);
-
-router.get("/:id", ProductController.getSingle);
-
-router.post("/post", adminCheck, ProductController.postSingle);
-
-router.put("/put/:id", adminCheck, ProductController.putSingle);
-
-router.delete("/delete/:id", adminCheck, ProductController.deleteSingle);
-
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const product_controller_1 = __importDefault(require("../controllers/product.controller"));
+const adminCheck_1 = __importDefault(require("../middlewares/adminCheck"));
+const router = (0, express_1.Router)();
+router.get("/", product_controller_1.default.getAll);
+router.get("/:id", product_controller_1.default.getSingle);
+router.post("/post", adminCheck_1.default, product_controller_1.default.postSingle);
+router.put("/put/:id", adminCheck_1.default, product_controller_1.default.putSingle);
+router.delete("/delete/:id", adminCheck_1.default, product_controller_1.default.deleteSingle);
 const productRoute = router;
-export default productRoute;
-
+exports.default = productRoute;
 /**
  * @swagger
  * /products:
