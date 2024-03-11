@@ -59,12 +59,12 @@ export default productRoute;
  *              properties:
  *                message:
  *                  type: string
- *                  example: product not found
- * /products/post:
+ *                  example: product not found by id : [productId]
+ * /products/create:
  *  post:
  *    tags:
  *      - Product
- *    description: Change details of current product and return your new profile details
+ *    description: Create new Product and return data of new product
  *    security:
  *      - bearerAuth: []
  *    requestBody:
@@ -79,11 +79,11 @@ export default productRoute;
  *          application/json:
  *            schema:
  *              $ref: '#/components/schemas/Product'
- * /products/put/{id}:
+ * /products/edit/{id}:
  *  put:
  *    tags:
  *      - Product
- *    description: Change passowrd of product
+ *    description: Change details of product by product id
  *    parameters:
  *      - name: id
  *        in: path
@@ -118,8 +118,8 @@ export default productRoute;
  *              properties:
  *                message:
  *                  type: string
- *                  example: product not found
- * /products/delete/{id}:
+ *                  example: Product notfound with id : ${productId}
+ * /products/remove/{id}:
  *  delete:
  *    tags:
  *      - Product
@@ -153,5 +153,5 @@ export default productRoute;
  *              properties:
  *                message:
  *                  type: string
- *                  example: product not found
+ *                  example: Product notfound with id : ${productId}
  */

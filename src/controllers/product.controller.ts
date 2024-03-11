@@ -22,6 +22,12 @@ export default class ProductController {
           id: productId,
         },
       });
+      if (!product) {
+        return res.status(404).json({
+          data: null,
+          message: `product not found by id : ${productId}`,
+        });
+      }
       return res.json({
         data: product,
       });
@@ -119,7 +125,9 @@ export default class ProductController {
       });
 
       if (!product)
-        return res.status(404).send(`Product notfound with id : ${productId}`);
+        return res
+          .status(404)
+          .json({ message: `Product notfound with id : ${productId}` });
 
       product = await db.product.update({
         where: {
@@ -169,7 +177,9 @@ export default class ProductController {
       });
 
       if (!product)
-        return res.status(404).send(`Product notfound with id : ${productId}`);
+        return res
+          .status(404)
+          .json({ message: `Product notfound with id : ${productId}` });
 
       product = await db.product.delete({
         where: {
