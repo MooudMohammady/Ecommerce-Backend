@@ -8,11 +8,11 @@ router.get("/", ProductController.getAll);
 
 router.get("/:id", ProductController.getSingle);
 
-router.post("/post", adminCheck, ProductController.postSingle);
+router.post("/create", adminCheck, ProductController.postSingle);
 
-router.put("/put/:id", adminCheck, ProductController.putSingle);
+router.put("/edit/:id", adminCheck, ProductController.putSingle);
 
-router.delete("/delete/:id", adminCheck, ProductController.deleteSingle);
+router.delete("/remove/:id", adminCheck, ProductController.deleteSingle);
 
 const productRoute = router;
 export default productRoute;
@@ -59,7 +59,7 @@ export default productRoute;
  *              properties:
  *                message:
  *                  type: string
- *                  example: product not found by id : [productId]
+ *                  example: 'Product not found by id : [productId]'
  * /products/create:
  *  post:
  *    tags:
@@ -118,7 +118,7 @@ export default productRoute;
  *              properties:
  *                message:
  *                  type: string
- *                  example: Product notfound with id : ${productId}
+ *                  example: 'Product not found by id : [productId]'
  * /products/remove/{id}:
  *  delete:
  *    tags:
@@ -153,5 +153,5 @@ export default productRoute;
  *              properties:
  *                message:
  *                  type: string
- *                  example: Product notfound with id : ${productId}
+ *                  example: 'Product not found by id : [productId]'
  */
