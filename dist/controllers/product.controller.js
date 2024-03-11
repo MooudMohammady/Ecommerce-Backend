@@ -22,6 +22,12 @@ class ProductController {
                     id: productId,
                 },
             });
+            if (!product) {
+                return res.status(404).json({
+                    data: null,
+                    message: `product not found by id : ${productId}`,
+                });
+            }
             return res.json({
                 data: product,
             });
@@ -90,7 +96,9 @@ class ProductController {
                 },
             });
             if (!product)
-                return res.status(404).send(`Product notfound with id : ${productId}`);
+                return res
+                    .status(404)
+                    .json({ message: `Product notfound with id : ${productId}` });
             product = await db_1.db.product.update({
                 where: {
                     id: productId,
@@ -138,7 +146,9 @@ class ProductController {
                 },
             });
             if (!product)
-                return res.status(404).send(`Product notfound with id : ${productId}`);
+                return res
+                    .status(404)
+                    .json({ message: `Product notfound with id : ${productId}` });
             product = await db_1.db.product.delete({
                 where: {
                     id: productId,

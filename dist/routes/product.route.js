@@ -9,9 +9,9 @@ const adminCheck_1 = __importDefault(require("../middlewares/adminCheck"));
 const router = (0, express_1.Router)();
 router.get("/", product_controller_1.default.getAll);
 router.get("/:id", product_controller_1.default.getSingle);
-router.post("/post", adminCheck_1.default, product_controller_1.default.postSingle);
-router.put("/put/:id", adminCheck_1.default, product_controller_1.default.putSingle);
-router.delete("/delete/:id", adminCheck_1.default, product_controller_1.default.deleteSingle);
+router.post("/create", adminCheck_1.default, product_controller_1.default.postSingle);
+router.put("/edit/:id", adminCheck_1.default, product_controller_1.default.putSingle);
+router.delete("/remove/:id", adminCheck_1.default, product_controller_1.default.deleteSingle);
 const productRoute = router;
 exports.default = productRoute;
 /**
@@ -56,12 +56,12 @@ exports.default = productRoute;
  *              properties:
  *                message:
  *                  type: string
- *                  example: product not found
- * /products/post:
+ *                  example: 'Product not found by id : [productId]'
+ * /products/create:
  *  post:
  *    tags:
  *      - Product
- *    description: Change details of current product and return your new profile details
+ *    description: Create new Product and return data of new product
  *    security:
  *      - bearerAuth: []
  *    requestBody:
@@ -76,11 +76,11 @@ exports.default = productRoute;
  *          application/json:
  *            schema:
  *              $ref: '#/components/schemas/Product'
- * /products/put/{id}:
+ * /products/edit/{id}:
  *  put:
  *    tags:
  *      - Product
- *    description: Change passowrd of product
+ *    description: Change details of product by product id
  *    parameters:
  *      - name: id
  *        in: path
@@ -115,8 +115,8 @@ exports.default = productRoute;
  *              properties:
  *                message:
  *                  type: string
- *                  example: product not found
- * /products/delete/{id}:
+ *                  example: 'Product not found by id : [productId]'
+ * /products/remove/{id}:
  *  delete:
  *    tags:
  *      - Product
@@ -150,5 +150,5 @@ exports.default = productRoute;
  *              properties:
  *                message:
  *                  type: string
- *                  example: product not found
+ *                  example: 'Product not found by id : [productId]'
  */
