@@ -155,6 +155,7 @@ export default setupSwaggerRoute;
  *          nullable: true
  *        products:
  *          type: array
+ *          readOnly: true
  *          items:
  *            $ref: '#/components/schemas/Product'
  *        createdAt:
