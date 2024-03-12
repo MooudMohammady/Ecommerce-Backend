@@ -6,11 +6,11 @@ const router = Router();
 
 router.get("/", CategoryController.getAll);
 
-router.post("/", adminCheck, CategoryController.postSingle);
+router.post("/create", adminCheck, CategoryController.postSingle);
 
-router.put("/:id", adminCheck, CategoryController.putSingle);
+router.put("/edit/:id", adminCheck, CategoryController.putSingle);
 
-router.delete("/:id", adminCheck, CategoryController.deleteSingle);
+router.delete("/remove/:id", adminCheck, CategoryController.deleteSingle);
 
 const categoryRoute = router;
 export default categoryRoute;
