@@ -7,6 +7,7 @@
     "build": "npx tsc",
     "start": "node dist/index.js",
     "dev": "nodemon ./src/index.ts",
+    "prebuild" : "npx prisma generate",
     "pre-commit": "npm run build && git add dist/*"
   },
   "pre-commit": "pre-commit",
