@@ -4,7 +4,9 @@ const db_1 = require("../lib/db");
 class ProductController {
     static getAll = async (req, res) => {
         try {
-            const products = await db_1.db.product.findMany();
+            const products = await db_1.db.product.findMany({
+                include: { categories: true },
+            });
             return res.json({
                 data: products,
             });
@@ -19,11 +21,11 @@ class ProductController {
             const productId = req.params.id;
             const product = await db_1.db.product.findFirst({
                 where: {
-                    id: productId
+                    id: productId,
                 },
                 include: {
-                    categories: true
-                }
+                    categories: true,
+                },
             });
             console.log(product);
             if (!product) {

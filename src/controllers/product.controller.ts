@@ -5,7 +5,9 @@ import { db } from "../lib/db";
 export default class ProductController {
   static getAll = async (req: Request, res: Response) => {
     try {
-      const products = await db.product.findMany();
+      const products = await db.product.findMany({
+        include: { categories: true },
+      });
       return res.json({
         data: products,
       });
@@ -19,14 +21,14 @@ export default class ProductController {
       const productId = req.params.id;
       const product = await db.product.findFirst({
         where: {
-          id:productId
+          id: productId,
         },
         include: {
-          categories:true
-        }
+          categories: true,
+        },
       });
       console.log(product);
-      
+
       if (!product) {
         return res.status(404).json({
           data: null,
