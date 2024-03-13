@@ -7,9 +7,9 @@
     "build": "npx tsc",
     "start": "node dist/index.js",
     "dev": "nodemon ./src/index.ts",
-    "prebuild": "npx prisma generate"
+    "pre-commit": "npm run build && git add dist/*"
   },
-  "prepush": "build",
+  "pre-commit": "pre-commit",
   "nodemonConfig": {
     "watch": [
       "src"
@@ -51,7 +51,6 @@
     "concurrently": "^8.2.2",
     "nodemon": "^3.1.0",
     "pre-push": "^0.1.4",
-    "oncurrently": "^8.2.2",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.3.3"
   }

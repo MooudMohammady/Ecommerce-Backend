@@ -19,9 +19,13 @@ class ProductController {
             const productId = req.params.id;
             const product = await db_1.db.product.findFirst({
                 where: {
-                    id: productId,
+                    id: productId
                 },
+                include: {
+                    categories: true
+                }
             });
+            console.log(product);
             if (!product) {
                 return res.status(404).json({
                     data: null,
@@ -78,7 +82,7 @@ class ProductController {
                 },
             });
             return res.json({
-                data: product,
+                data: product.pop(),
             });
         }
         catch (error) {
