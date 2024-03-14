@@ -7,16 +7,12 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const http_errors_1 = __importDefault(require("http-errors"));
 const express_1 = require("express");
 const db_1 = require("../lib/db");
-const getCookies_1 = __importDefault(require("../lib/getCookies"));
 const router = (0, express_1.Router)();
 router.use(async (req, res, next) => {
-    let token = (0, getCookies_1.default)(req).token;
-    if (token)
-        req.headers.authorization = `Bearer ${token}`;
     if (!req.headers.authorization) {
         return next(http_errors_1.default.Unauthorized("Access token is required"));
     }
-    token = req.headers.authorization.split(" ")[1];
+    const token = req.headers.authorization.split(" ")[1];
     if (!token) {
         return next(http_errors_1.default.Unauthorized());
     }

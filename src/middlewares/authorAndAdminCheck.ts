@@ -2,17 +2,14 @@ import jwt from "jsonwebtoken";
 import createError from "http-errors";
 import { Router } from "express";
 import { db } from "../lib/db";
-import getCookies from "../lib/getCookies";
 
 const router = Router();
 
 router.use(async (req, res, next) => {
-  let token = getCookies(req).token;
-  if (token) req.headers.authorization = `Bearer ${token}`;
   if (!req.headers.authorization) {
     return next(createError.Unauthorized("Access token is required"));
   }
-  token = req.headers.authorization.split(" ")[1];
+  const token = req.headers.authorization.split(" ")[1];
   if (!token) {
     return next(createError.Unauthorized());
   }
