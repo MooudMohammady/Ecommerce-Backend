@@ -3,18 +3,19 @@ import { Request, Response } from "express";
 import { db } from "../lib/db";
 
 function parseSortString(sortString: string) {
-  const sortObj = {};
+  const sortArray: object[] = [];
   if (sortString) {
     const sortFields = sortString.split(",");
     sortFields.forEach((field) => {
       const [key, value] = field.trim().split(":");
-      console.log(key, value);
-
+      const sortOrder = value.toUpperCase() === "DESC" ? "desc" : "asc";
+      const sortObject = {};
       //@ts-ignore
-      sortObj[key] = value.toUpperCase() === "DESC" ? "desc" : "asc";
+      sortObject[key] = sortOrder;
+      sortArray.push(sortObject);
     });
   }
-  return sortObj;
+  return sortArray;
 }
 
 export default class ProductController {

@@ -2,17 +2,19 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const db_1 = require("../lib/db");
 function parseSortString(sortString) {
-    const sortObj = {};
+    const sortArray = [];
     if (sortString) {
         const sortFields = sortString.split(",");
         sortFields.forEach((field) => {
             const [key, value] = field.trim().split(":");
-            console.log(key, value);
+            const sortOrder = value.toUpperCase() === "DESC" ? "desc" : "asc";
+            const sortObject = {};
             //@ts-ignore
-            sortObj[key] = value.toUpperCase() === "DESC" ? "desc" : "asc";
+            sortObject[key] = sortOrder;
+            sortArray.push(sortObject);
         });
     }
-    return sortObj;
+    return sortArray;
 }
 class ProductController {
     static getAll = async (req, res) => {
