@@ -11,6 +11,7 @@ import cartRoute from "./routes/cart.route";
 import orderRoute from "./routes/order.route";
 import setupSwaggerRoute from "./lib/swagger";
 import userRoute from "./routes/user.route";
+import fileRoute from "./routes/file.route";
 
 //For env File
 dotenv.config();
@@ -37,6 +38,7 @@ app.use("/products", productRoute);
 app.use("/categories", categoryRoute);
 app.use("/carts", cartRoute);
 app.use("/orders", orderRoute);
+app.use("/files", fileRoute);
 
 
 app.get("*", (req, res) => {

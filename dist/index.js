@@ -15,6 +15,7 @@ const cart_route_1 = __importDefault(require("./routes/cart.route"));
 const order_route_1 = __importDefault(require("./routes/order.route"));
 const swagger_1 = __importDefault(require("./lib/swagger"));
 const user_route_1 = __importDefault(require("./routes/user.route"));
+const file_route_1 = __importDefault(require("./routes/file.route"));
 //For env File
 dotenv_1.default.config();
 const app = (0, express_1.default)();
@@ -35,6 +36,7 @@ app.use("/products", product_route_1.default);
 app.use("/categories", category_route_1.default);
 app.use("/carts", cart_route_1.default);
 app.use("/orders", order_route_1.default);
+app.use("/files", file_route_1.default);
 app.get("*", (req, res) => {
     res.status(404).send("Endpoint notfound 404 !");
 });
