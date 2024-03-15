@@ -8,8 +8,8 @@ function parseSortString(sortString: string) {
     const sortFields = sortString.split(",");
     sortFields.forEach((field) => {
       const [key, value] = field.trim().split(":");
-      console.log(key,value);
-      
+      console.log(key, value);
+
       //@ts-ignore
       sortObj[key] = value.toUpperCase() === "DESC" ? "desc" : "asc";
     });
@@ -45,10 +45,7 @@ export default class ProductController {
       if (queryString.q) {
         queryObj = {
           ...queryObj,
-          OR: [
-            { title: { contains: queryString.q } },
-            { description: { contains: queryString.q } },
-          ],
+          OR: [{ title: { contains: queryString.q } }],
         };
       }
 

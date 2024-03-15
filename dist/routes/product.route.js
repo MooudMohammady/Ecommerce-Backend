@@ -21,6 +21,21 @@ exports.default = productRoute;
  *    tags:
  *      - Product
  *    description: Change details of current product and return your new profile details
+ *    parameters:
+ *      - in: query
+ *        name: q
+ *        description: Search parameters in product fields like title
+ *      - in: query
+ *        name: page
+ *        type: number
+ *        description: Page of products for pagination. required limit !
+ *      - in: query
+ *        name: limit
+ *        type: number
+ *        description: Limit of products for pagination. required page !
+ *      - in: query
+ *        name: sort
+ *        description: 'Sort by fields of product. Example: title:asc,price:desc'
  *    responses:
  *      200:
  *        description: Successful

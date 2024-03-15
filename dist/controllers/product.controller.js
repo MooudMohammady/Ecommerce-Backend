@@ -39,10 +39,7 @@ class ProductController {
             if (queryString.q) {
                 queryObj = {
                     ...queryObj,
-                    OR: [
-                        { title: { contains: queryString.q } },
-                        { description: { contains: queryString.q } },
-                    ],
+                    OR: [{ title: { contains: queryString.q } }],
                 };
             }
             const products = await db_1.db.product.findMany({
