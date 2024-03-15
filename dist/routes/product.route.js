@@ -20,7 +20,7 @@ exports.default = productRoute;
  *  get:
  *    tags:
  *      - Product
- *    description: Change details of current product and return your new profile details
+ *    description: Return all of products with querys parameters features
  *    parameters:
  *      - in: query
  *        name: q
@@ -47,7 +47,7 @@ exports.default = productRoute;
  *  get:
  *    tags:
  *      - Product
- *    description: Get single product
+ *    description: Get single product by product id
  *    parameters:
  *      - name: id
  *        in: path
