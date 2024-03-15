@@ -2,12 +2,64 @@ import { Request, Response } from "express";
 
 import { db } from "../lib/db";
 
+function parseSortString(sortString: string) {
+  const sortObj = {};
+  if (sortString) {
+    const sortFields = sortString.split(",");
+    sortFields.forEach((field) => {
+      const [key, value] = field.trim().split(":");
+      console.log(key,value);
+      
+      //@ts-ignore
+      sortObj[key] = value.toUpperCase() === "DESC" ? "desc" : "asc";
+    });
+  }
+  return sortObj;
+}
+
 export default class ProductController {
   static getAll = async (req: Request, res: Response) => {
     try {
+      let queryString = req.query as any;
+      let queryObj = { ...queryString };
+      const excludedFields = [
+        "page",
+        "sort",
+        "limit",
+        "fields",
+        "q",
+        "min_price",
+        "max_price",
+      ];
+      excludedFields.forEach((el) => delete queryObj[el]);
+
+      // Sort
+      const orderBy = parseSortString(queryString.sort);
+
+      // Pagination
+      const page = queryString.page * 1 || 1;
+      const take = queryString.limit * 1 || 20;
+      const skip = (page - 1) * take;
+
+      // Search
+      if (queryString.q) {
+        queryObj = {
+          ...queryObj,
+          OR: [
+            { title: { contains: queryString.q } },
+            { description: { contains: queryString.q } },
+          ],
+        };
+      }
+
       const products = await db.product.findMany({
+        where: queryObj,
         include: { categories: true },
+        orderBy,
+        skip,
+        take,
       });
+
       return res.json({
         data: products,
       });

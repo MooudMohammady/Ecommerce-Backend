@@ -1,11 +1,56 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const db_1 = require("../lib/db");
+function parseSortString(sortString) {
+    const sortObj = {};
+    if (sortString) {
+        const sortFields = sortString.split(",");
+        sortFields.forEach((field) => {
+            const [key, value] = field.trim().split(":");
+            console.log(key, value);
+            //@ts-ignore
+            sortObj[key] = value.toUpperCase() === "DESC" ? "desc" : "asc";
+        });
+    }
+    return sortObj;
+}
 class ProductController {
     static getAll = async (req, res) => {
         try {
+            let queryString = req.query;
+            let queryObj = { ...queryString };
+            const excludedFields = [
+                "page",
+                "sort",
+                "limit",
+                "fields",
+                "q",
+                "min_price",
+                "max_price",
+            ];
+            excludedFields.forEach((el) => delete queryObj[el]);
+            // Sort
+            const orderBy = parseSortString(queryString.sort);
+            // Pagination
+            const page = queryString.page * 1 || 1;
+            const take = queryString.limit * 1 || 20;
+            const skip = (page - 1) * take;
+            // Search
+            if (queryString.q) {
+                queryObj = {
+                    ...queryObj,
+                    OR: [
+                        { title: { contains: queryString.q } },
+                        { description: { contains: queryString.q } },
+                    ],
+                };
+            }
             const products = await db_1.db.product.findMany({
+                where: queryObj,
                 include: { categories: true },
+                orderBy,
+                skip,
+                take,
             });
             return res.json({
                 data: products,
