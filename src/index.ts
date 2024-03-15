@@ -20,13 +20,25 @@ const app = express();
 const port = process.env.PORT || 4040;
 
 // swtup swagger
-app.use(setupSwaggerRoute)
+app.use(setupSwaggerRoute);
 
 // setup routes without bodyParser
 app.use("/upload", uploadRoute);
 
 // setup middelware
-app.use(cors())
+app.use(function (req, res, next) {
+  res.setHeader("Access-Control-Allow-Origin", process.env.CLIENT_URL || "http://localhost:3000");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "X-Requested-With,content-type,Authorization",
+  );
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  next();
+});
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(morgan("tiny"));
@@ -39,7 +51,6 @@ app.use("/categories", categoryRoute);
 app.use("/carts", cartRoute);
 app.use("/orders", orderRoute);
 app.use("/files", fileRoute);
-
 
 app.get("*", (req, res) => {
   res.status(404).send("Endpoint notfound 404 !");
